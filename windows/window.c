@@ -3,6 +3,8 @@
 #define _UNICODE
 #include <windows.h>
 #include <tchar.h>
+#include <stdio.h>
+
 const TCHAR CLSNAME[] = TEXT("helloworldWClass");
 LRESULT CALLBACK winproc(HWND hwnd, UINT wm, WPARAM wp, LPARAM lp);
 
@@ -11,6 +13,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, PSTR cmdline, int cmd
     WNDCLASSEX wc = { };
     MSG msg;
     HWND hwnd;
+    int count = 0;
 
     wc.cbSize        = sizeof (wc);
     wc.style         = 0;
@@ -51,6 +54,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, PSTR cmdline, int cmd
     ShowWindow(hwnd, cmdshow);
     UpdateWindow(hwnd);
     while (GetMessage(&msg, NULL, 0, 0)) {
+        printf("Message %d Received\n", ++count);
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }

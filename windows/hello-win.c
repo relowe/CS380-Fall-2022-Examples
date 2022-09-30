@@ -5,5 +5,8 @@ int APIENTRY WinMain(HINSTANCE hInst,
                      PSTR cmdline, 
                      int cmdshow) 
 {
-    return MessageBox(NULL, "Hello, world", "caption", 0);
+    while(1) {
+    MessageBox(NULL, "Hello, world", "caption",
+    MB_ABORTRETRYIGNORE|MB_ICONERROR);
+    }
 }
