@@ -1,0 +1,16 @@
+Translate to a physical address: 0x80000f2e
+
+Translate into binary
+
+Hex:   8    0    0    0    0    f   2    e
+Bin: 10000000000000000000111100101110
+| L2  || L1    || L0    || OFFFSET  |
+Offset (12 bits) - f2e
+L0 (9 bits) - 0x000
+L1 (9 bits) - 0x000
+L2 (9 bits) - 0x002
+
+L2_PTE Address: SATP + 8 * L2
+                SATP + 16 = 0x87fff010
+
+L2_PTE - 0x0000000021ffe801
