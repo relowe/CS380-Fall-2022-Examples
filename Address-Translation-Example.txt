@@ -5,12 +5,71 @@ Translate into binary
 Hex:   8    0    0    0    0    f   2    e
 Bin: 10000000000000000000111100101110
 | L2  || L1    || L0    || OFFFSET  |
+
 Offset (12 bits) - f2e
-L0 (9 bits) - 0x000
-L1 (9 bits) - 0x000
+
+L0 (9 bits) - 0x000 L1 (9 bits) - 0x000
 L2 (9 bits) - 0x002
 
+SATP = 0x87fff000
 L2_PTE Address: SATP + 8 * L2
                 SATP + 16 = 0x87fff010
 
 L2_PTE - 0x0000000021ffe801
+
+
+PTE Format
+
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+
+
+L2_PTE - 0x0000000021ffe801
+                                00100001111111111110100000000001
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+L2 PPN - 0x87FFFA000
+1000 0111 1111 1111 1010
+8    7    F     F   A
+
+L0 Table is located at L2-PPN + 8 * L1 offset
+L2-PPN Addres is 0x87ffa000
+
+L2-PTE: 0x21ffe401
+
+                                00100001111111111110010000000001
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+
+1000 0111 1111 1111 1001
+8     7   F     F    9
+
+L1-PPN + L0 * 8 
+L1-PTE 0x87ff9000
+
+0x2000004b
+
+                                00100000000000000000000001001011
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+
+1000 0000 0000 0000 0000
+8     0     0    0   0
+
+PPN - 0x80000
+
+
+PA = PPN*4096 + offset
+   =  0x80000000 + f2e
+   =  0x80000f2e
+
+What gives?
+
+- Kernel maps all of phyiscal memory onto like virtual addresses
+- kernel gets easy access to all memory
+- for the kernel PA == VA
+- For user process PA =/= VA
