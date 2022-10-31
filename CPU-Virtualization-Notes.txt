@@ -55,3 +55,9 @@ Full Accounting of a System Call (in Xv6)
 
 
 
+Kernel Organization 
+  - Calling Convention 
+    - Monolithic Kernel - Very C-Like
+                        - Everything is handled by the kernel
+    - Micro-Kernel - Very Windows like
+                   - message passing

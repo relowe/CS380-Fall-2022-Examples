@@ -1,0 +1,64 @@
+Xv6 User Space
+ - Each process gets its page directory.
+ - uvmcreate (vm.c) creates an empty user page table
+ - XV6 creates processes in a flat memory model beginning at the
+   bottom of memory.
+
+
+Example: Echo
+pc: 0x00
+sp: 0x3fa0
+
+   - A wide separation between code and sp
+
+   - Echo code runs from 0x00 to 0x0824
+
+Exploring usertests
+
+L2 Page Table:
+0x87f43000:     0x0000000021fcfc01      0x0000000000000000
+0x87f43010:     0x0000000000000000      0x0000000000000000
+... All zeroes from here.
+
+L1 Page Table Is located where?
+0x21fcfc01
+                                00100001111111001111110000000001
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+1000 0111 1111 0011 1111
+8    7    f    3    f
+
+L1 page table 0x87f3f000
+0x87f3f000:     0x0000000021fcf801      0x0000000000000000
+0x87f3f010:     0x0000000000000000      0x0000000000000000
+0x87f3f020:     0x0000000000000000      0x0000000000000000
+.... All zeroes form here...
+
+
+L0 page table 
+0x21fcf801
+                                00100001111111001111100000000001
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
+1000 0111 1111 0011 1110
+0x87f3e000
+
+0x87f3e000:     0x0000000021fd005b      0x0000000021fcf41b
+0x87f3e010:     0x0000000021fcf01b      0x0000000021fcec1b
+0x87f3e020:     0x0000000021fce81b      0x0000000021fce45b
+0x87f3e030:     0x0000000021fce01b      0x0000000021fcdc1b
+0x87f3e040:     0x0000000021fcd85b      0x0000000021fcd417
+0x87f3e050:     0x0000000021fcd017      0x0000000021fccc17
+0x87f3e060:     0x0000000021fcc817      0x0000000021fcc417
+0x87f3e070:     0x0000000021fcc017      0x0000000021fcbc17
+0x87f3e080:     0x0000000021fcb807      0x0000000021fcb4d7
+0x87f3e090:     0x0000000000000000      0x0000000000000000
+.... All zeroes from here....
+
+5b
+                                                        01011011
+-Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
+                                                      SS
+                                                      WW
