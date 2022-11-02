@@ -45,20 +45,61 @@ L0 page table
 1000 0111 1111 0011 1110
 0x87f3e000
 
-0x87f3e000:     0x0000000021fd005b      0x0000000021fcf41b
-0x87f3e010:     0x0000000021fcf01b      0x0000000021fcec1b
-0x87f3e020:     0x0000000021fce81b      0x0000000021fce45b
-0x87f3e030:     0x0000000021fce01b      0x0000000021fcdc1b
-0x87f3e040:     0x0000000021fcd85b      0x0000000021fcd417
-0x87f3e050:     0x0000000021fcd017      0x0000000021fccc17
-0x87f3e060:     0x0000000021fcc817      0x0000000021fcc417
-0x87f3e070:     0x0000000021fcc017      0x0000000021fcbc17
-0x87f3e080:     0x0000000021fcb807      0x0000000021fcb4d7
+0x87f3e000:     0x0000000021fd005b URX  0x0000000021fcf41b URX
+0x87f3e010:     0x0000000021fcf01b URX  0x0000000021fcec1b URX
+0x87f3e020:     0x0000000021fce81b URX  0x0000000021fce45b URX
+0x87f3e030:     0x0000000021fce01b URX  0x0000000021fcdc1b URX
+0x87f3e040:     0x0000000021fcd85b URX  0x0000000021fcd417 URW
+0x87f3e050:     0x0000000021fcd017 URW  0x0000000021fccc17 URW
+0x87f3e060:     0x0000000021fcc817 URW  0x0000000021fcc417 URW
+0x87f3e070:     0x0000000021fcc017 URW  0x0000000021fcbc17 URW
+0x87f3e080:     0x0000000021fcb807  RW  0x0000000021fcb4d7 URW
 0x87f3e090:     0x0000000000000000      0x0000000000000000
 .... All zeroes from here....
 
-5b
-                                                        01011011
+                                                        11010111 d7-
+                                                        00010111 17 URW
+                                                        00000111 07-RW
+                                                        00011011 1b-URX
+                                                        01011011 5b- 
 -Reserved-|---Physical Page Number-------------------|RRDAGUXWRV
                                                       SS
                                                       WW
+
+virtual address format
+|---L2--||--L1---||--L0---||-Offset---|
+000000000000000000000000000000000000000   Smallest mapped address
+....
+000000000000000000000010001111111111111   Largest mapped address
+
+0x00000 Smallest
+0x11FFF Largest Address
+
+(73,727 in decimal. 73,728 bytes long)
+
+While running, at the start of main: 
+PC = 0x5868
+SP = 0x11fd0
+
+
+Address Space (usertests)
+1000 1111 1111 1111   
+8fff
+
+0x00000+---------+    Bottom
+       | Text    |
+       |  (URX)  |
+       | ...     |
+0x08fff+---------+
+0x09000| Data    |
+       |  (URW)  |
+       | ...     |
+0x0f000+---------+
+0x10000|Guard Pg |
+       |  (RW)   |
+       | ...     |
+0x11000+---------+
+       | Stack   | 1 page for the stack
+       |  (URW)  | 
+       | ...     |
+0x11fff+---------+   Top
