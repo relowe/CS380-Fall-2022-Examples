@@ -1,0 +1,51 @@
+Resource Management
+  - Memory Management
+    - Divide memory between the kernel and the processes
+  - Time Management
+  - Hardware Interaction
+
+
+Memory Management
+  - What is the basic unit of allocation?
+    - Xv6-RiscV: Pages (4KB) 4096 bytes
+  - How do we manage the allocation?
+
+Xv6 Physical Memory Layout
+=========================
+
+// 00001000 -- boot ROM, provided by qemu
+// 02000000 -- CLINT
+// 0C000000 -- PLIC
+// 10000000 -- uart0 
+// 10001000 -- virtio disk 
+
+Bottom of Physical Memory
+// 80000000 -- boot ROM jumps here in machine mode
+//             -kernel loads the kernel here
+    80000000 KERNEL
+             ....
+    80021d60 end
+             UNUSABLE SPACE
+
+    80022000 First Available Page       
+             ...
+
+KERNEL+128MB PHYSTOP (end of physical memory)
+
+
+
+Computer Science BYTE sizes
+---------------------------
+byte        2^0  bytes (1 byte)
+kilobyte    2^10 bytes (1024 bytes)
+megabyte    2^20 bytes (1,048,576 bytes)
+gigabyte    2^30 bytes (1,073,741,824 bytes)
+
+
+
+Xv6's page allocation scheme
+                                                freelist 
++---------+    +----------+                        V
+|00000    |<---|PTR       | <--- ....      <---   PTR
+|         |    |          |
++---------+    +----------+
