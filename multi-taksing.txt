@@ -1,0 +1,40 @@
+Multi-Tasking Types:
+  1.) Pre-emptive multitasking - Timesharing
+      A process runs, but can be interrupted periodically.
+         - Windows
+         - Linux
+         - Mac OS X
+         - UNIX
+
+  2.) Co-Operative Multitasking
+      A process runs until it yields.
+         - Batch processing systems (IOS IBM, not apple)
+         - Original Macintosh OS (1980s)
+         - Real Time System (embedded)
+
+
+Pre-Emptive Multitasking
+========================
+- Hardware interrupts
+
+                                                                      
+                       +--------+                                     
+                       |        |                                     
+                       | CPU    |                                     
+                       |        |                                     
+                       |        |                                     
+                       |        |                                     
+                       |        |                                     
+                       |        |                                     
+                       |        |                                     
+                       |        |                                     
+       +-------+       |        |                                     
+       |Inter- |       |        |                                     
+       |val    +------->INT     |                                     
+       |       |       |        |                                     
+       |Timer  |       +--------+                                     
+       +-------+                                                      
+
+RISC-V - Built-In Interval timer
+  - generates interrupts
+  - Raise interrupt at regular intervals.
