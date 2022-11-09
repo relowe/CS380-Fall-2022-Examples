@@ -1,0 +1,47 @@
+- Multiplexing the CPU across several processes.
+
+1.) Select a process.
+2.) Switch to the process.
+3.) After some time, go back to step 1.
+
+
+Scheduling Strategies - How do we select the process?
+
+    Process Lifecycle 
+                                                            
+    +--------------+           +--------------+             
+    |  Runnable    +----------->  Running     |             
+    +--------------+           +------+---+---+             
+        ^  ^                          |   |                 
+        |  |                          |   |                 
+        |  |     Timer Signal         |   |                 
+        |  +--------------------------+   |                 
+        |        (some) syscalls          |                                
+        |                                 |                 
+        |                                 |                 
+        |       +---------------+         |                 
+        +-------|  Waiting      |<--------+                 
+                +---------------+   Usually I/O             
+
+    How do we select a runnable process?
+       - Complete smaller processes first.
+       - Make sure that every process gets some computer time.
+       - Maximize Throughput (complete as much as possible)
+       - Keep the CPU busy
+       - Keep the system responsive
+
+    Schemes for selecting processes.
+        - Round Robin Scheduling
+          Cycle through each runnable process in turn.
+          Pros: Really easy to implement and understand.
+                Very fair.
+          Cons: Cannot prioritize processes.
+                System will "feel" laggy.
+
+        - Priority Queue
+          Assigns a priority number to each process.
+          Sorts runnable processes by priority.
+          Performs round-robin scheduling on the sorted list.
+          Pros: Easy to implement to understand (sort of)
+                We can prioritize.
+          Cons: Possible to starve a process.
