@@ -45,3 +45,44 @@ Scheduling Strategies - How do we select the process?
           Pros: Easy to implement to understand (sort of)
                 We can prioritize.
           Cons: Possible to starve a process.
+
+
+Concurrency
+===========
+- True concurrency: Simulatenous threads of execution.
+                    - one thread per CPU core
+
+RISC-V
+- Cores are called "harts"
+- Each "hart" has a hardware id. Starting at 0.
+- At power on:
+  All harts go to the start address (0x80000000)
+
+                                                                      
+                                                                      
+    +--------+       +--------+       +---------+                     
+    |Hart 0  |       |Hart 1  |       |Hart 2   |                     
+    +--------+       +--------+       +---------+                     
+        |                 |               |                           
+     _entry             _entry          _entry                              
+        |                 |               |                           
+     start               start           start                        
+        |                 |               |
+      main               main            main
+        |                 |               |                           
+    initialization       wait            wait                         
+       ...                |               |                           
+        |                 |               |                           
+      started=1           |               |                           
+        |                kvminithart    kvminithart                   
+      scheduler          trapinithart   trapinithart                  
+                         plicinithart   plicinithart
+                          |               |
+                        scheduler       scheduler                     
+                                                                      
+                                                                      
+                                                                      
+- Multiple CPU Threads
+  - Compete for RAM and HW access
+  - They race each other
+  - Need a mechanism to perform synchonrization
